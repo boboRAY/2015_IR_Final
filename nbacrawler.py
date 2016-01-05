@@ -4,6 +4,7 @@ import urllib2
 from pymongo import MongoClient
 import re
 import time
+import random
 
 client = MongoClient()
 db = client.ptt_article
@@ -59,11 +60,18 @@ for i in range(1, 500):
     while True:
         try:
             urls = get_onepage_live_url(url)
-            for link in urls:
-                get_one_article(link)
-            url = next_page(url)
             break
         except:
             time.sleep(5)
             print 'except'
             continue
+        for link in urls:
+            while True:
+            try:
+                get_one_article(link)
+                break
+            except:
+                print 'except'
+                t = random.randint(1,5)
+                time.sleep(t)
+        url = next_page(url)
