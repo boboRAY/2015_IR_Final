@@ -14,12 +14,15 @@ def get_one_article(url):
     content = urllib2.urlopen(url)
     soup = BeautifulSoup(content, 'lxml')
 
-    time_tag = soup.find('span', class_="article-meta-tag", text='時間')
-    time = time_tag.next_sibling.get_text()
-
-    title_tag = soup.find('span', class_="article-meta-tag", text='標題')
-    title = title_tag.next_sibling.get_text()
-    print title
+    try:
+        time_tag = soup.find('span', class_="article-meta-tag", text='時間')
+        time = time_tag.next_sibling.get_text()
+        title_tag = soup.find('span', class_="article-meta-tag", text='標題')
+        title = title_tag.next_sibling.get_text()
+        print title
+    except:
+        print 'article error',url
+        return
 
     rawpushes = soup.find_all('div', class_='push')
     pushes = []
@@ -33,6 +36,7 @@ def get_one_article(url):
     articles = db.articles
     articles.insert_one(article)
 
+
 def get_onepage_live_url(url):
     content = urllib2.urlopen(url)
     soup = BeautifulSoup(content, 'lxml')
@@ -45,6 +49,7 @@ def get_onepage_live_url(url):
             urls.append(url)
     return urls
 
+
 def next_page(url):
     content = urllib2.urlopen(url)
     soup = BeautifulSoup(content, 'lxml')
@@ -54,23 +59,23 @@ def next_page(url):
 
 url = 'https://www.ptt.cc/bbs/NBA/index3420.html'
 
-for i in range(1, 500):
-    print 'page',i
+for i in range(1, 262):
+    print 'page', i
     while True:
         try:
             urls = get_onepage_live_url(url)
             url = next_page(url)
             break
         except:
-            time.sleep(5)
-            print 'except'
+            time.sleep(1)
+            print 'except1 ', url
             continue
     for link in urls:
         while True:
             try:
                 get_one_article(link)
                 break
-            except:
-                print 'except'
-                t = random.randint(5, 10)
+            except urllib2.HTTPError, err:
+                print 'except2 ', link
+                t = random.randint(1, 5)
                 time.sleep(t)
