@@ -11,7 +11,6 @@ db = client.ptt_article
 
 
 def get_one_article(url):
-    print url
     content = urllib2.urlopen(url)
     soup = BeautifulSoup(content, 'lxml')
 
@@ -56,22 +55,22 @@ def next_page(url):
 url = 'https://www.ptt.cc/bbs/NBA/index3420.html'
 
 for i in range(1, 500):
-    print url
+    print 'page',i
     while True:
         try:
             urls = get_onepage_live_url(url)
+            url = next_page(url)
             break
         except:
             time.sleep(5)
             print 'except'
             continue
-        for link in urls:
-            while True:
+    for link in urls:
+        while True:
             try:
                 get_one_article(link)
                 break
             except:
                 print 'except'
-                t = random.randint(1,5)
+                t = random.randint(5, 10)
                 time.sleep(t)
-        url = next_page(url)
