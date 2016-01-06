@@ -42,7 +42,7 @@ f = open('chinese_dict.txt','w')
 for word, freq in sorted(dictionary.items(), key=lambda x:x[1]):
     if freq < 10:
 	continue
-    f.write(word.encode('utf-8')+'   ')
+    f.write(word.encode('utf-8')+' ')
     f.write(str(freq))
     f.write('\n')
 
