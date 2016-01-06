@@ -38,7 +38,7 @@ for article in articles:
                 else:
                     dictionary[word] = words[word]
 
-f = open('dictionary.txt','w')
+f = open('chinese_dict.txt','w')
 for word, freq in sorted(dictionary.items(), key=lambda x:x[1]):
     if freq < 10:
 	continue
