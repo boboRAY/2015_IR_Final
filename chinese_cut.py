@@ -10,6 +10,7 @@ articles = db.articles.find_one()
 
 articles = [articles]
 
+jieba.set_dictionary('dict.txt.big')
 jieba.load_userdict('chinese_dict.txt')
 
 

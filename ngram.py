@@ -15,13 +15,14 @@ def list2bigram(mylist):
 
 def allngram(text):
     words = {}
-    for n in range(min(len(text),2), min(5,len(text))):
+    for n in range(min(len(text), 2), min(5, len(text))):
         for w in range(len(text)-(n-1)):
+            weight = 0.1  # give weight by lengh
             word = text[w:w+n]
             if word in words:
-                words[word] = words[word] + 1 * len(text) # power 
+                words[word] = words[word] + weight
             else:
-                words[word] = len(word) 
+                words[word] = weight
     return words
 
 
@@ -38,10 +39,11 @@ for article in articles:
                 else:
                     dictionary[word] = words[word]
 
-f = open('chinese_dict.txt','w')
-for word, freq in sorted(dictionary.items(), key=lambda x:x[1]):
-    if freq < 10:
-	continue
+f = open('chinese_dict.txt', 'w')
+for word, freq in sorted(dictionary.items(), key=lambda x: x[1]):
+    if freq < 2:
+        continue
+    freq = int(freq)
     f.write(word.encode('utf-8')+' ')
     f.write(str(freq))
     f.write('\n')

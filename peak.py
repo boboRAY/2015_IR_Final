@@ -4,13 +4,17 @@ from bson.objectid import ObjectId
 from datetime import datetime
 import matplotlib.pyplot as plt
 import numpy as np
+import jieba
 
 client = MongoClient()
 db = client.ptt_article
 
 articles = {}
-article = db.articles.find_one({'_id': ObjectId('5686910d3e103d28540d60c0')})
+article = db.articles.find_one({'_id': ObjectId('568cf7d43e103d1da090f10d')})
 # cursor = db.articles.find()
+
+jieba.set_dictionary('dict.txt.big')
+jieba.load_userdict('chinese_dict.txt')
 
 pushes = article['pushes']
 pre_date = 0
@@ -25,7 +29,7 @@ for push in pushes:
         window = []
         window.append(push)
     pre_date = date
-'''
+
 f = open('peak.txt', 'w')
 for i in range(2, len(pushes_minute)):
     pre = pushes_minute[i-2]
@@ -34,12 +38,14 @@ for i in range(2, len(pushes_minute)):
     if len(mid) > len(pre) and len(mid) > len(nex):
         f.write(mid[0]['date']+'\n')
         for push in mid:
-            f.write(push['content'].encode('utf-8')+'\n')
-            print push['content'], push['date']
+            content = push['content']
+            words = jieba.cut(content)
+            for word in words:
+                f.write(word.encode('utf-8') + '/')
+            f.write('\n')
         f.write('\n')
-        print '\n'
 f.close()
-'''
+
 pushes_len = []
 for pushes in pushes_minute:
     pushes_len.append(len(pushes)+1)
@@ -48,3 +54,4 @@ t = np.arange(len(pushes_minute))
 # red dashes, blue squares and green triangles
 plt.plot(t, pushes_len, marker='o')
 plt.show()
+
