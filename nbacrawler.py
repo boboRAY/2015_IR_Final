@@ -59,7 +59,7 @@ def next_page(url):
 
 url = 'https://www.ptt.cc/bbs/NBA/index3420.html'
 
-for i in range(1, 262):
+for i in range(1, 2000):
     print 'page', i
     while True:
         try:
