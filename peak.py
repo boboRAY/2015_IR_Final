@@ -10,7 +10,7 @@ client = MongoClient()
 db = client.ptt_article
 
 articles = {}
-article = db.articles.find_one({'_id': ObjectId('568cf7d43e103d1da090f10d')})
+article = db.articles.find_one()
 # cursor = db.articles.find()
 
 jieba.set_dictionary('dict.txt.big')
