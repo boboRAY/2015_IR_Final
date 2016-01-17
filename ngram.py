@@ -3,7 +3,7 @@ from pymongo import MongoClient
 import re
 
 client = MongoClient()
-db = client.ptt_article
+db = client.nba_train
 
 articles = {}
 articles = db.articles.find()

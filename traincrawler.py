@@ -7,7 +7,7 @@ import time
 import random
 
 client = MongoClient()
-db = client.ptt_article1
+db = client.nba_train
 
 
 def get_one_article(url):
@@ -43,7 +43,7 @@ def get_onepage_live_url(url):
     blocks = soup.find_all('div', class_='r-ent')
     urls = []
     for block in blocks:
-        urlblock = block.find('a', text=re.compile('Live'))
+        urlblock = block.find('a')
         if urlblock:
             url = 'https://www.ptt.cc/'+urlblock['href']
             urls.append(url)
@@ -66,9 +66,9 @@ for i in range(1, 2000):
             urls = get_onepage_live_url(url)
             url = next_page(url)
             break
-        except:
+        except urllib2.HTTPError, err:
             time.sleep(1)
-            print 'except1 ', url
+            print 'except1 ', url, err
             continue
     for link in urls:
         while True:
